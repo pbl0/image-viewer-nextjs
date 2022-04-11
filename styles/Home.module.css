@@ -164,12 +164,6 @@
   
 }
 
-.imageFull {
-  object-fit: contain;
-  width: 100% !important;
-  position: relative !important;
-  height: unset !important;
-}
 
 
 @media (max-width: 600px) {
