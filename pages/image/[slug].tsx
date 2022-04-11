@@ -4,6 +4,8 @@ import Image from 'next/image'
 import styles from '../../styles/Home.module.css'
 import Link from 'next/link'
 
+import React, { useState, useEffect } from 'react';
+
 
 const ImagePage: NextPage = () =>{
     const router = useRouter()
@@ -13,12 +15,23 @@ const ImagePage: NextPage = () =>{
     let width = Number(res.split('x')[0])
 
     let scale = 1;
-
-    if (height > 922){
-        scale = 922/height;
-        height = 922;
-        width = width * scale
+    let ih
+    let imageComp
+    if (typeof window !== "undefined") {
+        ih = window.innerHeight
+        if (height > ih){
+            scale = ih/height;
+            height = ih;
+            width = width * scale
+        }
+        imageComp = (<Image
+        src={'/assets/'+router.query.slug}
+        height={height}
+        width={width}            
+        objectFit='contain'
+    ></Image>)
     }
+
     return (
     <div className={styles.black}>
         <div
@@ -33,17 +46,15 @@ const ImagePage: NextPage = () =>{
         </div>
 
         
-        <div
+        {/* <div
                 style={{
                     display: "flex",
                     justifyContent: "center",
                   }}
-        >
-            <Image
-                src={'/assets/'+router.query.slug}
-                height={height}
-                width={width}
-            ></Image>
+        > */}
+        <div className={styles.imageContainer}>
+            
+        {imageComp}
         </div>
 
         <div className={styles.info}>
@@ -60,7 +71,9 @@ const ImagePage: NextPage = () =>{
     </div>
 
     )
+    
 }
+
 
 
 // To not lose query when refresh, Idk why but it works, 
